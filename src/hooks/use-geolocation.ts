@@ -1,56 +1,46 @@
+import { useState, useEffect } from "react";
 import type { Coordinates } from "@/api/types";
-import { useEffect, useState } from "react";
 
-
-interface GeolocationState{
-    coordinates:Coordinates|null;
-    error:string|null;
-    isLoading:boolean;
+interface GeolocationState {
+  coordinates: Coordinates | null;
+  error: string | null;
+  isLoading: boolean;
 }
 
-export function useGeolocation()
-{
+export function useGeolocation() {
+  const [locationData, setLocationData] = useState<GeolocationState>({
+    coordinates: null,
+    error: null,
+    isLoading: true,
+  });
 
- const [locationData,setLocationData]=useState<GeolocationState>({
-  
-    coordinates:null,
-    error:null,
-    isLoading:true
+  const getLocation = () => {
+    setLocationData((prev) => ({ ...prev, isLoading: true, error: null }));
 
- })
+    if (!navigator.geolocation) {
+      setLocationData({
+        coordinates: null,
+        error: "Geolocation is not supported by your browser",
+        isLoading: false,
+      });
+      return;
+    }
 
- const getLocation=()=>
- {
-      setLocationData((prev)=>(
-        {
-            ...prev,isLoading:true,error:null
-        }
-      ))
-
-      if(!navigator.geolocation)
-      {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
         setLocationData({
-            coordinates:null,
-            error:"Geolocation is not supported by your browser",
-            isLoading:false
-        })
-      }
+          coordinates: {
+            lat: position.coords.latitude,
+            lon: position.coords.longitude,
+          },
+          error: null,
+          isLoading: false,
+        });
+      },
+      (error) => {
+        let errorMessage: string;
 
-      navigator.geolocation.getCurrentPosition((position)=>
-    {
-
-        setLocationData({
-            coordinates:{
-                lat:position.coords.latitude,
-                lon:position.coords.longitude
-            },
-            error:null,
-            isLoading:false,
-        })
-    },(error)=>
-    {
-       let errorMessage:string;
-       switch (error.code) {
+        switch (error.code) {
           case error.PERMISSION_DENIED:
             errorMessage =
               "Location permission denied. Please enable location access.";
@@ -66,25 +56,26 @@ export function useGeolocation()
         }
 
         setLocationData({
-            coordinates:null,
-            error:errorMessage,
-            isLoading:false,
-        })
+          coordinates: null,
+          error: errorMessage,
+          isLoading: false,
+        });
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0,
+      }
+    );
+  };
 
-    },{
-        enableHighAccuracy:true,
-        timeout:5000,
-        maximumAge:0
-    })
- }
+  // Get location on component mount
+  useEffect(() => {
+    getLocation();
+  }, []);
 
- 
- useEffect(()=>
-{
-    getLocation()
-},[])
-
-return {
-    ...locationData,getLocation
-}
+  return {
+    ...locationData,
+    getLocation, // Expose method to manually refresh location
+  };
 }

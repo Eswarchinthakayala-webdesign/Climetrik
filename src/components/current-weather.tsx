@@ -1,3 +1,4 @@
+
 import { Card, CardContent } from "./ui/card";
 import { ArrowDown, ArrowUp, Droplets, Wind } from "lucide-react";
 import type { WeatherData, GeocodingResponse } from "@/api/types";
@@ -15,7 +16,7 @@ export function CurrentWeather({ data, locationName }: CurrentWeatherProps) {
   } = data;
 
   // Format temperature
-
+  
 
   return (
     <Card className="overflow-hidden">

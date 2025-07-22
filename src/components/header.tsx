@@ -1,30 +1,34 @@
 import { useTheme } from '@/context/theme-provider'
-import { Moon, Sun } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { CitySearch } from './city-search'
+import { ThemeToggle } from './theme-toggle'
+
 const Header = () => {
-    const {theme,setTheme}=useTheme()
-    const isDark=theme==='dark'
+  const { theme } = useTheme()
+  const isDark = theme === 'dark'
+
   return (
-    <header className='sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur  py-1 pr-8 supports-[backdrop-filter]:bg-background/60'>
-        <div className='container mx-auto flex h-16 items-center justify-between px-4'>
-            <Link to={"/"}>
-             <img src={isDark?"/logo1.png":"/logo2.png"} alt="climetrik logo" className='h-16' />
-            </Link>
-            <div className='flex gap-4'>
-                {/* {Search} */}
-             <CitySearch/>
+    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 py-2">
+      <div className="mx-auto flex flex-wrap items-center justify-between px-4  h-auto gap-2 max-w-screen-xl">
+        {/* Logo */}
+        <Link to="/" className="flex-shrink-0">
+          <img
+            src={isDark ? '/logo1.png' : '/logo2.png'}
+            alt="Climetrik logo"
+            className="h-20 w-auto"
+          />
+        </Link>
 
-                {/* {theme toggle} */}
-
-                <div onClick={()=>setTheme(isDark?'light':'dark')}
-                    className={`flex items-center cursor-pointer transition-transform duration-500   
-                        ${isDark?"rotate-180":"rotate-0"}
-                        `}>
-                    {isDark? <Sun className='h-6 w-6 text-yellow-500 rotate-0 transition-all'/>:<Moon className='h-6 w-6 text-blue-500 rotate-0 transition-all'/>}
-                </div>
-            </div>
+        {/* Right Section */}
+        <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0 min-w-0">
+          <div className="max-w-[150px] sm:max-w-none overflow-hidden truncate">
+            <CitySearch />
+          </div>
+          <div className="flex-shrink-0">
+            <ThemeToggle />
+          </div>
         </div>
+      </div>
     </header>
   )
 }

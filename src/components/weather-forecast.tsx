@@ -47,10 +47,11 @@ export function WeatherForecast({ data }: WeatherForecastProps) {
   const nextDays = Object.values(dailyForecasts).slice(1, 6);
 
 
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>5-Day Forecast</CardTitle>
+        <CardTitle>5 Day's Forecast</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="grid gap-4">
@@ -68,15 +69,15 @@ export function WeatherForecast({ data }: WeatherForecastProps) {
                 </p>
               </div>
 
-             <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <span className="flex items-center text-blue-500">
+              <div className="flex flex-col sm:flex-row justify-center gap-4">
+              <span className="flex items-center text-blue-500">
                 <ArrowDown className="mr-1 h-4 w-4" />
                 {day.temp_min}°
-            </span>
-            <span className="flex items-center text-red-500">
+              </span>
+              <span className="flex items-center text-red-500">
                 <ArrowUp className="mr-1 h-4 w-4" />
                 {day.temp_max}°
-            </span>
+              </span>
             </div>
 
 

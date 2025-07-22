@@ -1,7 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useLocalStorage } from "./use-local-storage";
 
-
 interface SearchHistoryItem {
   id: string;
   query: string;
